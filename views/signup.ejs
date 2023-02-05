@@ -9,28 +9,41 @@
 </head>
 <body>
     <div id="loginFormDiv">
-        <form action="/loginUser" method="POST" >
+        <form action="/create-user" method="POST" >
             <input 
-                name="email"
                 class="inputField" 
+                name="name"
                 type="text" 
-                placeholder="Email Address" 
+                placeholder="name" 
+                required 
             />
             <input 
-                class="inputField"
+                class="inputField" 
+                name="email"
+                type="text" 
+                placeholder="Email Address" 
+                required 
+            />
+            <input 
+                class="inputField" 
                 name="password"
                 type="password" 
                 placeholder="Password" 
+                required 
+            />
+            <input 
+                class="inputField" 
+                name="confirmPassword"
+                type="password" 
+                placeholder="Confirm password" 
+                required 
             />
             <input 
                 class="button-29" 
                 type="submit" 
-                value="Log In"
-            />
+                value="submit"
+            >
         </form>
-        <a href="#" id="forgetPassBtn">Forget password?</a>
-        <a href="/signup" >Create an account.</a>
-
     </div>
 </body>
 </html>
