@@ -38,8 +38,23 @@ router.post('/create-user', function(req, res){
     }
 });
 
-router.post('/loginUser', function(req, res){
-    console.log(req.body);
+router.post('/loginUser', async function(req, res){
+    var userEmail;
+    try{
+        userEmail = await user_credentials.findOne({email: req.body.email})
+
+        if(userEmail.password === req.body.password){
+            res.status(201).render('home');
+        }else{
+            res.send("Password or email are not correct!");
+        }
+    }catch{
+        if(!userEmail){
+            res.status(400).send("Invalid Email or password!")
+        }else{
+            res.status(400).send("Something went wrong!")
+        }
+    }
 })
 
 module.exports = router ;
