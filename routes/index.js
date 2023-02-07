@@ -1,4 +1,14 @@
 const express = require('express');
+var nodemailer = require('nodemailer');
+
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.ethereal.email',
+    port: 587,
+    auth: {
+        user: ,//SMTP email
+        pass: //SMTP password
+    }
+});
 
 // const app = express();
 
@@ -44,6 +54,21 @@ router.post('/loginUser', async function(req, res){
         userEmail = await user_credentials.findOne({email: req.body.email})
 
         if(userEmail.password === req.body.password){
+            var mailOptions = {
+                from: ,//SMTP email
+                to: `${req.body.email}`,
+                subject: 'Successfully Logged In',
+                text: 'You logged In'
+            };
+
+            transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                  console.log("error in sending email", error);
+                } else {
+                  console.log('Email sent: ' + info.response);
+                }
+            });
+
             res.status(201).render('home');
         }else{
             res.send("Password or email are not correct!");
