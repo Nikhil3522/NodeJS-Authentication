@@ -1,5 +1,6 @@
 const express = require('express');
 var nodemailer = require('nodemailer');
+const Noty = require("noty");
 
   const transporter = nodemailer.createTransport({
     host: 'smtp.ethereal.email',
@@ -21,7 +22,9 @@ router.use(express.json());
 router.use(express.urlencoded({extended:false}));
 
 router.get('/', function (req, res) {
-    return res.render('login');
+    return res.render('login', {
+        message: ""
+    });
 });
 
 router.get('/signup', function (req, res) {
@@ -70,8 +73,12 @@ router.post('/loginUser', async function(req, res){
             });
 
             res.status(201).render('home');
+
+     
         }else{
-            res.send("Password or email are not correct!");
+            return  res.render('login', {
+                message: "Wrong Password"
+            });
         }
     }catch{
         if(!userEmail){

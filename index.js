@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require('path');
 const port = 8000;
+const Noty = require("noty");
+
 
 const db = require('./config/mongoose');
 const Contact = require('./models/user_credentials');

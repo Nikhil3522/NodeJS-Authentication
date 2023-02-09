@@ -6,8 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/style.css">
     <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
     <h1>Welcome </h1>
+
+    <script>
+        new Noty({
+            theme: 'relax',
+            text: 'Successfully logged in',
+            type: 'success',
+            layout: 'topRight',
+            timeout: 1500
+
+        }).show();
+    </script>
 </body>
 </html>
