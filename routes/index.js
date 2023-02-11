@@ -1,8 +1,20 @@
 const express = require('express');
 var nodemailer = require('nodemailer');
 const Noty = require("noty");
+const bcrypt = require('bcryptjs');
+  
+const securePassword = async (password) => {
+    const passwordHash = await bcrypt.hash(password, 10);
+    return passwordHash;
+}
 
-  const transporter = nodemailer.createTransport({
+const passwordCompare = async (password, dbPassword) => {
+    let currPassword = await bcrypt.compare(password, dbPassword);
+    return currPassword;
+}
+
+
+const transporter = nodemailer.createTransport({
     host: 'smtp.ethereal.email',
     port: 587,
     auth: {
@@ -31,12 +43,14 @@ router.get('/signup', function (req, res) {
     return res.render('signup');
 });
 
-router.post('/create-user', function(req, res){
+router.post('/create-user', async function(req, res){
     if(req.body.password == req.body.confirmPassword){
+        let encryptPassword = await securePassword(req.body.password);
+        console.log("password is", encryptPassword);
         user_credentials.create({
             name: req.body.name,
             email: req.body.email,
-            password: req.body.password
+            password: encryptPassword,
         }, function(err, newUser){
             if(err){
                 console.log('error in creating a user!');
@@ -56,7 +70,9 @@ router.post('/loginUser', async function(req, res){
     try{
         userEmail = await user_credentials.findOne({email: req.body.email})
 
-        if(userEmail.password === req.body.password){
+        var passwordMatch = await passwordCompare(req.body.password, userEmail.password);
+
+        if(passwordMatch){
             var mailOptions = {
                 from: ,//SMTP email
                 to: `${req.body.email}`,
