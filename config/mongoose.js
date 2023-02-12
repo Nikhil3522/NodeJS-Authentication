@@ -1,8 +1,10 @@
 //require the library
 const mongoose = require('mongoose');
 
+mongoose.set('strictQuery', false);
+mongoose.connect("mongodb://localhost/NodeJS_Authentication", { useNewUrlParser: true });
 //connect to the database
-mongoose.connect('mongodb://localhost/NodeJS_Authentication');
+// mongoose.connect('mongodb://localhost/NodeJS_Authentication');
 
 //acquire the connection (to check if it is successful)
 const db = mongoose.connection;
