@@ -20,7 +20,7 @@ router.post('/change-password', userController.submitChangePassword);
 router.get('/forgetPassword', userController.forgetPassword);
 router.post('/sendOTP', userController.sendOTP);
 router.post('/submitPasswordFromForget', userController.submitPasswordFromForget);
-
+router.get('/logout', userController.logout);
 
 
 module.exports = router ;

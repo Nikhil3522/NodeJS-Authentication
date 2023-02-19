@@ -151,3 +151,15 @@ module.exports.submitPasswordFromForget = async function(req, res){
     }
 
 }
+
+module.exports.logout = async function(req, res){
+    if(req.isAuthenticated()){
+        res.clearCookie("codeial");
+        await req.user.save();   
+    }
+
+    return res.render("login",{
+        message: ""
+    });
+
+}
