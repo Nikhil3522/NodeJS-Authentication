@@ -22,5 +22,7 @@ router.post('/sendOTP', userController.sendOTP);
 router.post('/submitPasswordFromForget', userController.submitPasswordFromForget);
 router.get('/logout', userController.logout);
 
+router.get('/auth/google', passport.authenticate('google', {scope: ['profile', 'email']}));
+router.get('/auth/google/callback', passport.authenticate('google', {failureRedirect: '/users/sign-in'}), userController.loginUser);
 
 module.exports = router ;
