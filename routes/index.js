@@ -17,5 +17,10 @@ router.post('/loginUser', passport.authenticate(
 ), userController.loginUser);
 router.get('/change-password', passport.checkAuthentication, userController.changePassword);
 router.post('/change-password', userController.submitChangePassword);
+router.get('/forgetPassword', userController.forgetPassword);
+router.post('/sendOTP', userController.sendOTP);
+router.post('/submitPasswordFromForget', userController.submitPasswordFromForget);
+
+
 
 module.exports = router ;
