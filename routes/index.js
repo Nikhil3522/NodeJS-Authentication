@@ -15,5 +15,7 @@ router.post('/loginUser', passport.authenticate(
     'local',
     {failureRedirect: '/wrongPass'},
 ), userController.loginUser);
+router.get('/change-password', passport.checkAuthentication, userController.changePassword);
+router.post('/change-password', userController.submitChangePassword);
 
 module.exports = router ;

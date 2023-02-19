@@ -3,8 +3,11 @@ const bcrypt = require('bcryptjs');
 
 
 module.exports.login = function (req, res) {
+    console.log("user information", req.user);
     if(req.isAuthenticated()){
-        return res.redirect('/home');
+        return res.render('home',{
+            user: req.user
+        });
     }
 
     return res.render('login', {
@@ -14,7 +17,9 @@ module.exports.login = function (req, res) {
 
 module.exports.signup = function (req, res) {
     if(req.isAuthenticated()){
-        return res.redirect('/home');
+        return res.render('home',{
+            user: req.user
+        });
     }
 
     return res.render('signup');
@@ -52,46 +57,22 @@ module.exports.home = function (req, res){
 }
 
 module.exports.loginUser = async function(req, res){
-    return res.redirect('/home');
-    // var userEmail;
-    // try{
-    //     userEmail = await user_credentials.findOne({email: req.body.email})
+    return res.redirect('/');
+}
 
-    //     // var passwordMatch = await passwordCompare(req.body.password, userEmail.password);
-    //     var passwordMatch = await bcrypt.compare(req.body.password, userEmail.password);
+module.exports.changePassword = async function(req, res){
+    return  res.render('changePassword');
+}
 
+module.exports.submitChangePassword = async function(req, res){
+    var passwordMatch = await bcrypt.compare(req.body.currentPassword, req.user.password);
+    if((req.body.newPassword == req.body.confirmNewPassword) && (passwordMatch)){
+        let encryptPassword = await bcrypt.hash(req.body.newPassword, 10);
+        const update =  { $set: {name: req.user.name, email: req.user.email, password: encryptPassword}};
+        await user_credentials.updateOne({email: req.user.email}, update, {});
+        return res.redirect('/');
 
-    //     if(passwordMatch){
-    //         var mailOptions = {
-    //             from: 'casimir.hoeger71@ethereal.email',//SMTP email
-    //             to: `${req.body.email}`,
-    //             subject: 'Successfully Logged In',
-    //             text: 'You logged In'
-    //         };
-
-    //         transporter.sendMail(mailOptions, function(error, info){
-    //             if (error) {
-    //               console.log("error in sending email", error);
-    //             } else {
-    //               console.log('Email sent: ' + info.response);
-    //             }
-    //         });
-
-    //         res.cookie("user_id", userEmail.id);
-
-    //         res.status(201).render('home');
-
-     
-    //     }else{
-    //         return  res.render('login', {
-    //             message: "Wrong Password"
-    //         });
-    //     }
-    // }catch{
-    //     if(!userEmail){
-    //         res.status(400).send("Invalid Email or password!")
-    //     }else{
-    //         res.status(400).send("Something went wrong!")
-    //     }
-    // }
+    }else{
+        return res.redirect('/change-password');
+    }
 }
